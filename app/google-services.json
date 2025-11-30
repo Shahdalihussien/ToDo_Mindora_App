@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "329309878438",
+    "project_id": "to-do-app-mindora",
+    "storage_bucket": "to-do-app-mindora.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329309878438:android:6c8483faeb37d57c40dc67",
+        "android_client_info": {
+          "package_name": "com.example.todo_mindora_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjzEX3PlW4SOxCFyU1dvwzMhPx4sMvsJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
