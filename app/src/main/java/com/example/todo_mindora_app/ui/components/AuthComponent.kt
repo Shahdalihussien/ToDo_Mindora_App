@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -78,13 +80,13 @@ fun AuthTitle(
         Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
                 color = PrimaryColor
         )
         Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
-                color = SecondaryColor
+                color = TextColor
         )
     }
 }
@@ -126,11 +128,32 @@ Button(
                 .height(48.dp),
 shape = RoundedCornerShape(16.dp),
 colors = ButtonDefaults.buttonColors(
-        containerColor = PrimaryColor,
+        containerColor = SecondaryColor,
         contentColor = MaterialTheme.colorScheme.onPrimary
 )
         ) {
 Text(text)
         }
                 }
-                }
+    @Composable
+    fun OnboardingNavButton(
+        icon: ImageVector,
+        onClick: () -> Unit,
+        backgroundColor: Color = SecondaryColor
+    ) {
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier
+                .size(56.dp)
+                .background(backgroundColor, shape = CircleShape)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            )
+        }
+    }
+
+}

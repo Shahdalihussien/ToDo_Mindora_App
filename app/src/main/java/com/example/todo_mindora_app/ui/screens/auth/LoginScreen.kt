@@ -20,7 +20,8 @@ import com.example.todo_mindora_app.ui.viewmodel.AuthViewModel
 @Composable
 fun LoginScreen(
     authViewModel: AuthViewModel,
-    onNavigateToSignup: () -> Unit
+    onNavigateToSignup: () -> Unit,
+    onLoginSuccess: () -> Unit
 ) {
     val state: AuthUiState = authViewModel.uiState
 
@@ -31,7 +32,7 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 26.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -71,6 +72,7 @@ fun LoginScreen(
                     text = if (state.isLoading) "Logging in..." else "Login",
                     onClick = {
                         authViewModel.login(email.trim(), password.trim())
+                        onLoginSuccess()
                     },
                     enabled = !state.isLoading
                 )

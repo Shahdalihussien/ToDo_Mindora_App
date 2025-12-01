@@ -74,5 +74,11 @@ class AuthViewModel(
         uiState = AuthUiState(isLoggedIn = false)
     }
 
-    fun currentUserEmail(): String? = firebaseAuth.currentUser?.email
+    fun isUserLoggedIn(): Boolean {
+        return FirebaseAuth.getInstance().currentUser != null
+    }
+    fun currentUserName(): String? {
+        return FirebaseAuth.getInstance().currentUser?.email
+    }
+
 }

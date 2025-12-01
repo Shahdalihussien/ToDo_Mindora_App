@@ -6,6 +6,6 @@ val PrimaryColor = Color(0xFF5E60CE)
 val SecondaryColor = Color(0xFF4EA8DE)
 val AccentColor = Color(0xFFBDE0FE)
 
-val BackgroundColor = Color(0xFFFAFAFF)
+val BackgroundColor =Color(0xFFF9F9F9)
 val TextColor = Color(0xFF1A1A1A)
 val ErrorColor = Color(0xFFE76F51)

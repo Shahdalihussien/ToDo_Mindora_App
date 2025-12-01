@@ -6,9 +6,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,9 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import com.example.todo_mindora_app.R
 import com.example.todo_mindora_app.ui.screens.auth.AuthComponents
+
 import com.example.todo_mindora_app.ui.theme.AccentColor
 import com.example.todo_mindora_app.ui.theme.SecondaryColor
+import com.example.todo_mindora_app.ui.theme.TextColor
 import kotlinx.coroutines.launch
+
+
 
 data class OnboardingPage(
     val title: String,
@@ -121,19 +129,29 @@ fun OnboardingScreen(
                 }
 
                 Spacer(Modifier.height(24.dp))
-
-                AuthComponents.AuthPrimaryButton(
-                    text = if (pagerState.currentPage == pages.lastIndex) "Get Started" else "Next",
-                    onClick = {
-                        if (pagerState.currentPage == pages.lastIndex) {
-                            onFinish()
-                        } else {
-                            scope.launch {
-                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AuthComponents.OnboardingNavButton(
+                        icon = if (pagerState.currentPage == pages.lastIndex)
+                            Icons.Default.Check
+                        else
+                            Icons.Default.ArrowForward,
+                        onClick = {
+                            if (pagerState.currentPage == pages.lastIndex) {
+                                onFinish()
+                            } else {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
+
             }
         }
     }
@@ -155,16 +173,16 @@ private fun OnboardingPageContent(
             .padding(top = 56.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // الصورة
+
         Card(
             modifier = Modifier
-                .size(260.dp)
+                .size(200.dp)
                 .scale(imageScale),
-            shape = RoundedCornerShape(32.dp),
+            shape = RoundedCornerShape(30.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 10.0f)
             ),
-            elevation = CardDefaults.cardElevation(4.dp)
+            elevation = CardDefaults.cardElevation(0.3.dp)
         ) {
              Image(
                  painter = painterResource(id = page.imageRes),
@@ -200,13 +218,12 @@ private fun OnboardingPageContent(
         Text(
             text = page.subtitle,
             style = MaterialTheme.typography.bodyMedium,
-            color = SecondaryColor,
+            color = TextColor,
             textAlign = TextAlign.Center
         )
 
         Spacer(Modifier.height(16.dp))
 
-        // Bullets
         Column(
             verticalArrangement = Arrangement.spacedBy(6.dp),
             modifier = Modifier.fillMaxWidth(0.9f)
