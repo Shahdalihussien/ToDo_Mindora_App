@@ -9,12 +9,15 @@ import com.google.firebase.auth.FirebaseAuth
 data class AuthUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val isLoggedIn: Boolean = false
+    val isLoggedIn: Boolean = false,
+    // 3lshan elhome window
+    val isSuccess: Boolean = false,
 )
 
 class AuthViewModel(
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-) : ViewModel() {
+) : ViewModel()
+{
 
     var uiState by mutableStateOf(
         AuthUiState(
@@ -24,7 +27,8 @@ class AuthViewModel(
         private set
 
     fun signup(email: String, password: String) {
-        if (email.isBlank() || password.length < 6) {
+        if (email.isBlank() || password.length < 6)
+        {
             uiState = uiState.copy(
                 errorMessage = "Email must not be empty & password ≥ 6 chars"
             )
@@ -35,11 +39,23 @@ class AuthViewModel(
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                uiState = if (task.isSuccessful) {
-                    AuthUiState(isLoggedIn = true)
-                } else {
+                uiState = if (task.isSuccessful)
+                {
+                    AuthUiState(
+                        isLoggedIn = true,
+                        // 3lshan elhome window
+                        isLoading = false,
+                        isSuccess = true
+                    )
+                }
+                else
+                {
                     AuthUiState(
                         isLoggedIn = false,
+                        // 3lshan elhome window
+                        isLoading = true,
+                        isSuccess = false,
+
                         errorMessage = task.exception?.message ?: "Signup failed"
                     )
                 }
@@ -47,7 +63,8 @@ class AuthViewModel(
     }
 
     fun login(email: String, password: String) {
-        if (email.isBlank() || password.isBlank()) {
+        if (email.isBlank() || password.isBlank())
+        {
             uiState = uiState.copy(
                 errorMessage = "Please enter email & password"
             )
@@ -58,11 +75,23 @@ class AuthViewModel(
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                uiState = if (task.isSuccessful) {
-                    AuthUiState(isLoggedIn = true)
-                } else {
+                uiState = if (task.isSuccessful)
+                {
+                    AuthUiState(
+                        isLoggedIn = true,
+                        // 3lshan elhome window
+                        isLoading = false,
+                        isSuccess = true,
+                        errorMessage = null
+                    )
+                }
+                else
+                {
                     AuthUiState(
                         isLoggedIn = false,
+                        // 3lshan elhome window
+                        isLoading = true,
+                        isSuccess = false,
                         errorMessage = task.exception?.message ?: "Login failed"
                     )
                 }

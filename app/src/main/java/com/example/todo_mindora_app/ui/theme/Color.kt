@@ -28,3 +28,8 @@ val Cream = Color(0xFFEAD6D0)
 val WhiteTransparent = Color(0x80FFFFFF)
 val DarkTransparent = Color(0x66000000)
 
+
+val GradientTop = Color(0xFF96BAC0)
+val GradientMidd = Color(0xFFE6E9EE)      // لبني رمادي باهت
+val GradientMid = Color(0xFFF4D8D4)
+val GradientBottom = Color(0xFFEA8475)

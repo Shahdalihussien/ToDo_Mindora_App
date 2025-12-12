@@ -24,12 +24,20 @@ import com.example.todo_mindora_app.ui.theme.*
 @Composable
 fun LoginScreen(
     authViewModel: AuthViewModel,
-    onNavigateToSignup: () -> Unit
+    onNavigateToSignup: () -> Unit,
+    onLoginSuccess: () -> Unit = {}
 ) {
     val state: AuthUiState = authViewModel.uiState
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    // 3lshan yero7 lel home window if login success
+    LaunchedEffect(state.isSuccess) {
+        if (state.isSuccess) {
+            onLoginSuccess()
+        }
+    }
 
     AuthBackground {
 
@@ -69,14 +77,16 @@ fun LoginScreen(
                         text = state.errorMessage,
                         color = ErrorColor,
                         style = MaterialTheme.typography.bodySmall,
-                        fontSize = 25.sp,
+                        fontSize = 20.sp,
                         fontFamily = DescriptionFont
                     )
                 }
 
                 AuthPrimaryButton(
                     text = if (state.isLoading) "Logging in..." else "Login",
-                    onClick = { authViewModel.login(email.trim(), password.trim()) },
+                    onClick = {
+                        authViewModel.login(email.trim(), password.trim())
+                              },
                     enabled = !state.isLoading
                 )
             }
