@@ -1,277 +1,361 @@
 package com.example.todo_mindora_app.ui.screens.onboarding
 
-import androidx.annotation.DrawableRes
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.style.TextAlign
-import com.example.todo_mindora_app.R
-import com.example.todo_mindora_app.ui.screens.auth.AuthComponents
-
-import com.example.todo_mindora_app.ui.theme.AccentColor
-import com.example.todo_mindora_app.ui.theme.SecondaryColor
-import com.example.todo_mindora_app.ui.theme.TextColor
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import com.example.todo_mindora_app.R
+import com.example.todo_mindora_app.ui.theme.*
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 
 
-
-data class OnboardingPage(
-    val title: String,
-    val subtitle: String,
-    @DrawableRes val imageRes: Int,
-    val bullets: List<String>
-)
-
-@OptIn(ExperimentalFoundationApi::class)
+// ---------------------------------------------------------------
+// MAIN ONBOARDING SCREEN
+// ---------------------------------------------------------------
 @Composable
 fun OnboardingScreen(
-    onFinish: () -> Unit
+    logoFont: FontFamily,
+    onFinish: () -> Unit,
+    onLogin: () -> Unit,
+    onSignup: () -> Unit
 ) {
-    val pages = listOf(
-        OnboardingPage(
-            title = "Organize your day ",
-            subtitle = "Create and track your tasks in one calm space.",
-            imageRes = R.drawable.manage,
-            bullets = listOf(
+    val pages = listOf("page1", "page2", "page3", "page4")
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { pages.size })
 
-            )
-        ),
-        OnboardingPage(
-            title = "Stay focused ",
-            subtitle = "Use Pomodoro sessions to stay in deep focus.",
-            imageRes = R.drawable.foucs,
-            bullets = listOf(
-
-            )
-        ),
-        OnboardingPage(
-            title = "See your progress ",
-            subtitle = "Understand your productivity over time.",
-            imageRes = R.drawable.dashboard,
-            bullets = listOf(
-            )
+    val gradient = Brush.verticalGradient(
+        colors = listOf(
+            DeepOrange,
+            TealGreen,
+            DarkTeal
         )
     )
-
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { pages.size }
-    )
-    val scope = rememberCoroutineScope()
-
-    AuthComponents.AuthBackground {
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
-        ) {
-
-            TextButton(
-                onClick = onFinish,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 24.dp)
-            ) {
-                Text("Skip", color = SecondaryColor)
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 32.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) { page ->
-                    val pageData = pages[page]
-                    val isActive = pagerState.currentPage == page
-
-                    OnboardingPageContent(
-                        page = pageData,
-                        isActive = isActive
-                    )
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    repeat(pages.size) { index ->
-                        IndicatorDot(isSelected = index == pagerState.currentPage)
-                    }
-                }
-
-                Spacer(Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AuthComponents.OnboardingNavButton(
-                        icon = if (pagerState.currentPage == pages.lastIndex)
-                            Icons.Default.Check
-                        else
-                            Icons.Default.ArrowForward,
-                        onClick = {
-                            if (pagerState.currentPage == pages.lastIndex) {
-                                onFinish()
-                            } else {
-                                scope.launch {
-                                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                                }
-                            }
-                        }
-                    )
-                }
-
-            }
-        }
-    }
-}
-
-@Composable
-private fun OnboardingPageContent(
-    page: OnboardingPage,
-    isActive: Boolean
-) {
-    val imageScale by animateFloatAsState(
-        targetValue = if (isActive) 1f else 0.9f,
-        label = "imageScale"
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 56.dp, bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Card(
-            modifier = Modifier
-                .size(200.dp)
-                .scale(imageScale),
-            shape = RoundedCornerShape(30.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 10.0f)
-            ),
-            elevation = CardDefaults.cardElevation(0.3.dp)
-        ) {
-             Image(
-                 painter = painterResource(id = page.imageRes),
-                 contentDescription = null,
-                 modifier = Modifier.fillMaxSize(),
-                 contentScale = ContentScale.Crop
-             )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Image",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = SecondaryColor
-                )
-            }
-        }
-
-        Spacer(Modifier.height(24.dp))
-
-        Text(
-            text = page.title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        Text(
-            text = page.subtitle,
-            style = MaterialTheme.typography.bodyMedium,
-            color = TextColor,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-            modifier = Modifier.fillMaxWidth(0.9f)
-        ) {
-            page.bullets.forEach {
-                BulletRow(text = it)
-            }
-        }
-    }
-}
-
-@Composable
-private fun BulletRow(text: String) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(8.dp)
-                .then(
-                    Modifier
-                        .background(AccentColor, shape = RoundedCornerShape(50))
-                )
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
-
-@Composable
-private fun IndicatorDot(isSelected: Boolean) {
-    val width = if (isSelected) 22.dp else 10.dp
-    val height = 8.dp
 
     Box(
         modifier = Modifier
-            .padding(horizontal = 4.dp)
-            .width(width)
-            .height(height)
-            .background(
-                color = if (isSelected)
-                    SecondaryColor
-                else
-                    AccentColor.copy(alpha = 0.4f),
-                shape = RoundedCornerShape(50)
+            .fillMaxSize()
+            .background(gradient)
+    ) {
+
+        SimpleBubbles()
+
+        HorizontalPager(state = pagerState) { page ->
+            when (page) {
+
+                0 -> OnboardingPage(
+                    title = "Organize your tasks",
+                    desc = "Create,sort,and manage your to-do list easily",
+                    imageRes = R.drawable.task,
+                    showArrow = true,
+                    onArrowClick = { scope ->
+                        scope.launch { pagerState.animateScrollToPage(1) }
+                    }
+                )
+
+                1 -> OnboardingPage(
+                    title = "Focus with Pomodoro",
+                    desc = "Use the Pomodoro timer to stay productive and avoid distractions",
+                    imageRes = R.drawable.pomodoro,
+                    showArrow = true,
+                    onArrowClick = { scope ->
+                        scope.launch { pagerState.animateScrollToPage(2) }
+                    }
+                )
+
+                2 -> OnboardingPage(
+                    title = "Track your progress",
+                    desc = "Stay motivated as you complete tasks and improve your workflow",
+                    imageRes = R.drawable.productivity,
+                    showArrow = true,
+                    onArrowClick = { scope ->
+                        scope.launch { pagerState.animateScrollToPage(3) }
+                    }
+                )
+
+                3 -> FinalOnboardingPage(
+                    logoFont = logoFont,
+                    onLogin = onLogin,
+                    onSignup = onSignup
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 20.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(pages.size) { index ->
+                val selected = pagerState.currentPage == index
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(if (selected) 12.dp else 8.dp)
+                        .clip(CircleShape)
+                        .background(
+                            if (selected) Color.White else Color.White.copy(0.4f)
+                        )
+                )
+            }
+        }
+    }
+}
+
+
+
+// ---------------------------------------------------------------
+// BACKGROUND BLURRED BUBBLES
+// ---------------------------------------------------------------
+@Composable
+fun SimpleBubbles() {
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        val bubbles = listOf(
+            Triple(300, 5, 40),
+            Triple(40, 50, 20),
+            Triple(250, 80, 20),
+            Triple(55, 110, 45),
+            Triple(180, 150, 35),
+            Triple(320, 250, 25),
+            Triple(250, 300, 50),
+            Triple(35, 350, 30),
+            Triple(200, 370, 50),
+            Triple(100, 400, 20),
+            Triple(280, 550, 40),
+            Triple(40, 575, 25),
+            Triple(130, 600, 60),
+            Triple(280, 655, 20),
+            Triple(200, 700, 30),
+            Triple(40, 720, 40),
+            Triple(310, 750, 60)
+        )
+
+        bubbles.forEach {
+            Box(
+                modifier = Modifier
+                    .offset(x = it.first.dp, y = it.second.dp)
+                    .size(it.third.dp)
+                    .clip(CircleShape)
+                    .background(Cream.copy(alpha = 0.15f))
+                    .blur(25.dp)
             )
-    )
+        }
+    }
+}
+
+
+
+// ---------------------------------------------------------------
+// ONBOARDING PAGE TEMPLATE
+// ---------------------------------------------------------------
+@Composable
+fun OnboardingPage(
+    title: String,
+    desc: String,
+    imageRes: Int,
+    showArrow: Boolean,
+    onArrowClick: (CoroutineScope) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    val scaleAnim = remember { Animatable(1f) }
+
+    LaunchedEffect(Unit) {
+        scaleAnim.animateTo(
+            targetValue = 1.1f,
+            animationSpec = tween(1200, easing = FastOutSlowInEasing)
+        )
+        scaleAnim.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(1200, easing = FastOutSlowInEasing)
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        Card(
+            modifier = Modifier.size(260.dp),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.15f)),
+            elevation = CardDefaults.cardElevation(6.dp)
+        ) {
+            Image(
+                painter = painterResource(id = imageRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .size((360 * scaleAnim.value).dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(70.dp))
+
+        Text(
+            text = title,
+            color = Cream,
+            fontSize = 36.sp,
+            fontFamily = TitleFont
+        )
+
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(
+            text = desc,
+            color = Cream.copy(0.9f),
+            fontSize = 22.sp,
+            fontFamily = DescriptionFont
+
+        )
+
+        Spacer(modifier = Modifier.height(150.dp))
+
+        if (showArrow) {
+            IconButton(
+                onClick = { onArrowClick(scope) },
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .size(70.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "",
+                    tint = Color.White,
+                    modifier = Modifier.size(60.dp)
+                )
+            }
+        }
+    }
+}
+
+
+
+
+@Composable
+fun FinalOnboardingPage(
+    logoFont: FontFamily,
+    onLogin: () -> Unit,
+    onSignup: () -> Unit
+) {
+    val scaleAnim = remember { Animatable(0.6f) }
+    val alphaAnim = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        scaleAnim.animateTo(
+            targetValue = 1.15f,
+            animationSpec = tween(1200, easing = FastOutSlowInEasing)
+        )
+        alphaAnim.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(900)
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.mindora_logo),
+            contentDescription = "",
+            modifier = Modifier
+                .size((250 * scaleAnim.value).dp)
+                .alpha(alphaAnim.value)
+        )
+
+
+
+        Text(
+            text = "Welcome to",
+            color = Color.White,
+            fontSize = 28.sp,
+            fontFamily = DescriptionFont,
+            modifier = Modifier.alpha(alphaAnim.value)
+        )
+
+        Text(
+            text = "MINDORA",
+            fontFamily = logoFont,
+            fontSize = 52.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.alpha(alphaAnim.value)
+        )
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Button(
+            onClick = onLogin,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .height(65.dp)
+                .alpha(alphaAnim.value),
+            colors = ButtonDefaults.buttonColors(containerColor = DeepRed.copy(alpha = 0.85f))
+        ) {
+            Text(
+                "Login",
+                color = Color.White,
+                fontSize = 25.sp,
+                fontFamily = DescriptionFont,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = onSignup,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .height(65.dp)
+                .alpha(alphaAnim.value),
+            colors = ButtonDefaults.buttonColors(containerColor = DeepRedLight.copy(alpha = 0.85f))
+        ) {
+            Text(
+                "Signup",
+                color = Color.White,
+                fontSize = 25.sp,
+                fontFamily = DescriptionFont,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+
+    }
 }

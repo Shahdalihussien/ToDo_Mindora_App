@@ -1,3 +1,4 @@
+
 package com.example.todo_mindora_app.ui.screens.auth
 
 import androidx.compose.foundation.clickable
@@ -6,16 +7,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.todo_mindora_app.ui.theme.ErrorColor
+import androidx.compose.ui.unit.sp
+import com.example.todo_mindora_app.ui.screens.auth.AuthComponents.AuthBackground
+import com.example.todo_mindora_app.ui.screens.auth.AuthComponents.AuthCardSignup
+import com.example.todo_mindora_app.ui.screens.auth.AuthComponents.AuthTitle
+import com.example.todo_mindora_app.ui.screens.auth.AuthComponents.AuthTextField
+import com.example.todo_mindora_app.ui.screens.auth.AuthComponents.AuthPrimaryButton
+import com.example.todo_mindora_app.ui.theme.*
 import com.example.todo_mindora_app.ui.viewmodel.AuthUiState
 import com.example.todo_mindora_app.ui.viewmodel.AuthViewModel
 
 @Composable
 fun SignupScreen(
     authViewModel: AuthViewModel,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onSignupSuccess: () -> Unit = {}
 ) {
     val state: AuthUiState = authViewModel.uiState
 
@@ -26,8 +35,8 @@ fun SignupScreen(
     var confirmPassword by remember { mutableStateOf("") }
     var localError by remember { mutableStateOf<String?>(null) }
 
-    // ندمج AuthComponents هنا
-    AuthComponents.AuthBackground {
+    AuthBackground {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -36,49 +45,44 @@ fun SignupScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            AuthComponents.AuthTitle(
+            AuthTitle(
                 title = "Create Account",
-                subtitle = "Build your Mindora profile and get productive"
+                subtitle = "Build your Mindora profile"
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(48.dp))
 
-            AuthComponents.AuthCard {
+            AuthCardSignup {
 
-                // Full name
-                AuthComponents.AuthTextField(
+                AuthTextField(
                     value = fullName,
                     onValueChange = { fullName = it },
-                    label = "Full name"
+                    label = "Full Name"
                 )
 
-                // Username
-                AuthComponents.AuthTextField(
+                AuthTextField(
                     value = username,
                     onValueChange = { username = it },
                     label = "Username"
                 )
 
-                // Email
-                AuthComponents.AuthTextField(
+                AuthTextField(
                     value = email,
                     onValueChange = { email = it },
                     label = "Email"
                 )
 
-                // Password
-                AuthComponents.AuthTextField(
+                AuthTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = "Password (min 6 chars)",
+                    label = "Password",
                     visualTransformation = PasswordVisualTransformation()
                 )
 
-                // Confirm Password
-                AuthComponents.AuthTextField(
+                AuthTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = "Confirm password",
+                    label = "Confirm Password",
                     visualTransformation = PasswordVisualTransformation()
                 )
 
@@ -87,29 +91,29 @@ fun SignupScreen(
                     Text(
                         text = errorToShow,
                         color = ErrorColor,
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 20.sp,
+                        fontFamily = DescriptionFont
                     )
                 }
 
-                Spacer(Modifier.height(6.dp))
-
-                AuthComponents.AuthPrimaryButton(
+                AuthPrimaryButton(
                     text = if (state.isLoading) "Creating account..." else "Sign Up",
                     onClick = {
                         localError = null
 
                         when {
                             fullName.isBlank() || username.isBlank() -> {
-                                localError = "Please enter your full name and username"
+                                localError = "Full name and username are required."
                             }
                             email.isBlank() -> {
-                                localError = "Email is required"
+                                localError = "Email is required."
                             }
                             password.length < 6 -> {
-                                localError = "Password must be at least 6 characters"
+                                localError = "Password must be at least 6 characters."
                             }
                             password != confirmPassword -> {
-                                localError = "Passwords do not match"
+                                localError = "Passwords don't match."
                             }
                             else -> {
                                 authViewModel.signup(email.trim(), password.trim())
@@ -120,16 +124,27 @@ fun SignupScreen(
                 )
             }
 
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(70.dp))
 
             Row {
-                Text("Already have an account? ")
                 Text(
-                    text = "Login",
-                    color = MaterialTheme.colorScheme.primary,
+                    text = "Already have an account? ",
+                    color = Cream,
+                    fontFamily = DescriptionFont,
+                    fontSize = 22.sp
+                )
+
+                Text(
+                    text = "LOGIN",
+                    color = Cream,
+                    fontFamily = DescriptionFont,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.clickable { onNavigateToLogin() }
                 )
             }
         }
     }
 }
+
+

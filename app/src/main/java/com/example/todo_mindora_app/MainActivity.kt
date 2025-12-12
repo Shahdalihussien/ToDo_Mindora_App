@@ -4,90 +4,59 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.navigation.compose.rememberNavController
+import com.example.todo_mindora_app.ui.screens.splash.SplashScreen
+import com.example.todo_mindora_app.ui.screens.onboarding.OnboardingScreen
 import com.example.todo_mindora_app.ui.screens.auth.LoginScreen
 import com.example.todo_mindora_app.ui.screens.auth.SignupScreen
-import com.example.todo_mindora_app.ui.screens.home.HomeScreen
-import com.example.todo_mindora_app.ui.screens.onboarding.OnboardingScreen
-import com.example.todo_mindora_app.ui.screens.tasks.AddTaskScreen
 import com.example.todo_mindora_app.ui.theme.ToDo_Mindora_AppTheme
-import com.example.todo_mindora_app.ui.viewmodel.AuthViewModel
-import com.example.todo_mindora_app.ui.viewmodel.TaskViewModel
+//import com.example.todo_mindora_app.ui.navigation.AppNavGraph
+import com.example.todo_mindora_app.R
+import androidx.navigation.NavHostController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val prefs = getSharedPreferences("mindora_prefs", MODE_PRIVATE)
-
         setContent {
             ToDo_Mindora_AppTheme {
 
-                // هل شاف الـ Onboarding قبل كده؟
-                var hasSeenOnboarding by remember {
-                    mutableStateOf(prefs.getBoolean("has_seen_onboarding", false))
-                }
+                val logoFont = FontFamily(
+                    Font(R.font.museomoderno_light)
+                )
 
-                // true = Login screen, false = Signup screen
-                var isLogin by remember { mutableStateOf(true) }
+                var step by remember { mutableStateOf(0) }
 
-                var showHome by remember { mutableStateOf(false) }
+                val navController = rememberNavController()
 
-                var showAddTask by remember { mutableStateOf(false) }
+                when (step) {
+                    0 -> SplashScreen(
+                        logoFont = logoFont,
+                        onFinish = { step = 1 }
+                    )
 
-                val authViewModel: AuthViewModel = viewModel()
-                val taskViewModel: TaskViewModel = viewModel()
+                    1 -> OnboardingScreen(
+                        logoFont = logoFont,
+                        onFinish = { step = 2 },
+                        onLogin = { step = 2 },
+                        onSignup = { step = 3 }
+                    )
 
-                when {
-                    // 1) Onboarding أول مرة بس
-                    !hasSeenOnboarding -> {
-                        OnboardingScreen(
-                            onFinish = {
-                                prefs.edit()
-                                    .putBoolean("has_seen_onboarding", true)
-                                    .apply()
-                                hasSeenOnboarding = true
-                            }
-                        )
-                    }
+                    2 -> LoginScreen(
+                        authViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+                        onNavigateToSignup = { step = 3 },
+                        onLoginSuccess = { step = 4 }
+                    )
 
-                    !showHome -> {
-                        if (isLogin) {
-                            LoginScreen(
-                                authViewModel = authViewModel,
-                                onNavigateToSignup = { isLogin = false },
-                                onLoginSuccess = {
-                                    showHome = true
-                                }
-                            )
-                        } else {
-                            SignupScreen(
-                                authViewModel = authViewModel,
-                                onNavigateToLogin = { isLogin = true },
+                    3 -> SignupScreen(
+                        authViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+                        onNavigateToLogin = { step = 2 },
+                        onSignupSuccess = { step = 4 }
+                    )
 
-                            )
-                        }
-                    }
-
-                    // 3) جوه الـ Home / AddTask
-                    else -> {
-                        if (showAddTask) {
-                            AddTaskScreen(
-                                taskViewModel = taskViewModel,
-                                onBack = { showAddTask = false }
-                            )
-                        } else {
-                            HomeScreen(
-                                userName = authViewModel.currentUserName() ?: "User",
-                                taskViewModel = taskViewModel,
-                                onAddTaskClick = { showAddTask = true },
-                                onTaskClick = { },
-                                onPomodoroClick = {  },
-                                onTasksClick = {  },
-                                onProfileClick = {}
-                            )
-                        }
-                    }
+                    //4 -> AppNavGraph(navController = navController)
                 }
             }
         }
