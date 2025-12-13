@@ -24,21 +24,15 @@ import com.example.todo_mindora_app.R
 import com.example.todo_mindora_app.ui.theme.DescriptionFont
 
 
-// -----------------------------------------------------
-// AUTH COMPONENTS
-// -----------------------------------------------------
 object AuthComponents {
 
-    // -----------------------------------------------------
-    // 🌅 Improved Background (Top & Bottom color – center Cream)
-    // -----------------------------------------------------
+
     @Composable
     fun AuthBackground(content: @Composable BoxScope.() -> Unit) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
 
-            // Background Image
             Image(
                 painter = painterResource(id = R.drawable.background),
                 contentDescription = null,
@@ -46,22 +40,18 @@ object AuthComponents {
                 modifier = Modifier.fillMaxSize()
             )
 
-            // Optional dark overlay (to make text more readable)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Black.copy(alpha = 0.40f))
             )
 
-            // The content (buttons, texts, fields)
             content()
         }
     }
 
 
-//     -----------------------------------------------------
-//     🧊 Glass Card (not transparent white – soft cream)
-//     -----------------------------------------------------
+
     @Composable
     fun AuthCardLogin(content: @Composable ColumnScope.() -> Unit) {
         Card(
@@ -110,9 +100,6 @@ object AuthComponents {
 
 
 
-    // -----------------------------------------------------
-    // 🔠 Titles
-    // -----------------------------------------------------
     @Composable
     fun AuthTitle(title: String, subtitle: String) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -138,9 +125,7 @@ object AuthComponents {
         }
     }
 
-    // -----------------------------------------------------
-    // ✏️ TextField
-    // -----------------------------------------------------
+
     @Composable
     fun AuthTextField(
         value: String,
@@ -167,9 +152,7 @@ object AuthComponents {
         )
     }
 
-    // -----------------------------------------------------
-    // 🔘 Primary Button
-    // -----------------------------------------------------
+
     @Composable
     fun AuthPrimaryButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
         Button(

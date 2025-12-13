@@ -34,9 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 
 
-// ---------------------------------------------------------------
-// MAIN ONBOARDING SCREEN
-// ---------------------------------------------------------------
+
 @Composable
 fun OnboardingScreen(
     logoFont: FontFamily,
@@ -170,9 +168,6 @@ fun SimpleBubbles() {
 
 
 
-// ---------------------------------------------------------------
-// ONBOARDING PAGE TEMPLATE
-// ---------------------------------------------------------------
 @Composable
 fun OnboardingPage(
     title: String,

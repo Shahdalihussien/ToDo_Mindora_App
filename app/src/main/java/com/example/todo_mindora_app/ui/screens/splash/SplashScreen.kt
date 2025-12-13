@@ -80,7 +80,7 @@ fun SplashScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 0.dp),   // ← شيلت الأوفست الأعلى بالكامل
+                .padding(top = 0.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -89,11 +89,11 @@ fun SplashScreen(
                 painter = painterResource(id = R.drawable.mindora_logo),
                 contentDescription = "Mindora Logo",
                 modifier = Modifier
-                    .offset(y = (-40).dp)   // ← هنا بقى السحر: رفعته فوق الدايرة *بالظبط*
+                    .offset(y = (-40).dp)
                     .size((360 * scaleAnim.value).dp)
             )
 
-            Spacer(modifier = Modifier.height(5.dp))  // مسافة بسيطة وشيك
+            Spacer(modifier = Modifier.height(5.dp))
 
             Text(
                 text = "MINDORA",
@@ -103,7 +103,7 @@ fun SplashScreen(
                 fontSize = 55.sp,
                 letterSpacing = 2.sp,
                 modifier = Modifier
-                    .offset(y = (-80).dp)  // ← ينزل تحت اللوجو بس لسه فوق الطبيعي
+                    .offset(y = (-80).dp)
             )
         }
     }
