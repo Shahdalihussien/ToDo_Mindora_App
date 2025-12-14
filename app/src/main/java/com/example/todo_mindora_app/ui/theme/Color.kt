@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 val PrimaryColor = Color(0xFF5E60CE)
 val SecondaryColor = Color(0xFF4EA8DE)
-val AccentColor = Color(0xFFBDE0FE)
 
 val BackgroundColor =Color(0xFFF9F9F9)
 val TextColor = Color(0xFF1A1A1A)
@@ -25,11 +24,12 @@ val SoftCoral      = Color(0xFFEA8475)
 val PastelTeal     = Color(0xFF86B5AB)
 val Cream = Color(0xFFEAD6D0)
 
-val WhiteTransparent = Color(0x80FFFFFF)
-val DarkTransparent = Color(0x66000000)
+val Grey = Color(0xA46C6B6B)
 
 
-val GradientTop = Color(0xFF96BAC0)
-val GradientMidd = Color(0xFFE6E9EE)
-val GradientMid = Color(0xFFF4D8D4)
+val Green = Color(0xFF084B0E)
+
+val GradientTop = Color(0xFF72ADB2)
+val GradientMidd = Color(0xFF96D1D7)
+val GradientMid = Color(0xFFDEA8A0)
 val GradientBottom = Color(0xFFEA8475)

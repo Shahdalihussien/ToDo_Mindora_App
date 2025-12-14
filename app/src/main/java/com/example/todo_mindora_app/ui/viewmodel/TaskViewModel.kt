@@ -19,7 +19,7 @@ import java.time.YearMonth
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db = AppDatabase.getDatabase(application)
-    val repository = TaskRepository(db.taskDao())
+    private val repository = TaskRepository(db.taskDao())
 
     val allTasks = repository.allTasks
 
@@ -33,10 +33,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _daysInMonth = MutableStateFlow(getDaysCurrentMonth())
     val daysInMonth: StateFlow<List<LocalDate>> = _daysInMonth.asStateFlow()
 
+    /* ---------------- DATE ---------------- */
 
     fun onDateSelected(date: LocalDate) {
         _selectedDate.value = date
     }
+
+    /* ---------------- ADD ---------------- */
 
     fun addTask(
         title: String,
@@ -49,32 +52,52 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         color: Color
     ) {
         viewModelScope.launch {
-            val newTask = TaskEntity(
-                title = title,
-                description = desc,
-                date = date,
-                startTime = startTime,
-                endTime = endTime,
-                priority = priority,
-                category = category,
-                color = color.toArgb(),
+            repository.addTask(
+                TaskEntity(
+                    title = title,
+                    description = desc,
+                    date = date,
+                    startTime = startTime,
+                    endTime = endTime,
+                    priority = priority,
+                    category = category,
+                    color = color.toArgb()
+                )
             )
-            repository.addTask(newTask)
+        }
+    }
+
+    /* ---------------- UPDATE ---------------- */
+
+    fun updateTask(task: TaskEntity) {
+        viewModelScope.launch {
+            repository.updateTask(task)
         }
     }
 
     fun toggleTaskCompletion(task: TaskEntity) {
+        updateTask(task.copy(isCompleted = !task.isCompleted))
+    }
+
+    /* ---------------- DELETE ---------------- */
+
+    fun deleteTask(task: TaskEntity) {
         viewModelScope.launch {
-            repository.updateTask(task.copy(isCompleted = !task.isCompleted))
+            repository.deleteTask(task)
         }
     }
 
+    /* ---------------- GET BY ID ---------------- */
+
+    suspend fun getTaskById(taskId: Int): TaskEntity? {
+        return repository.getTaskById(taskId)
+    }
+
+    /* ---------------- HELPERS ---------------- */
+
     private fun getDaysCurrentMonth(): List<LocalDate> {
         val yearMonth = YearMonth.now()
-        val days = mutableListOf<LocalDate>()
-        for (day in 1..yearMonth.lengthOfMonth()) {
-            days.add(yearMonth.atDay(day))
-        }
-        return days
+        return (1..yearMonth.lengthOfMonth())
+            .map { yearMonth.atDay(it) }
     }
 }
