@@ -63,8 +63,8 @@ fun AddTaskScreen(
     var subTasksList by remember { mutableStateOf(listOf<SubTaskUi>()) }
 
     val colors = listOf(
-        Color(0xFFEA8475), Color(0xFF5B8079), Color(0xFF4EA8DE),
-        Color(0xFFE8C88F), Color(0xFF97192E), Color(0xFF5E60CE)
+        Color(0xFF00586A), Color(0xFF97192E), Color(0xFF0086A1),
+        Color(0xFF5B5B5B), Color(0xFF007760), Color(0xFFEA8475)
     )
     var selectedColor by remember { mutableStateOf(colors[0]) }
 
