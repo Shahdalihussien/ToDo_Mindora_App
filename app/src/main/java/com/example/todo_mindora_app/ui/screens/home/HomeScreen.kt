@@ -50,7 +50,6 @@ fun HomeScreen(
     val activeTasks = tasks.filter { !it.isCompleted }
     val completedTasks = tasks.filter { it.isCompleted }
 
-    /* ---------- AUTO SCROLL TO TODAY ---------- */
     val listState = rememberLazyListState()
     val todayIndex = daysInMonth.indexOf(LocalDate.now())
 
@@ -134,7 +133,6 @@ fun HomeScreen(
 }
 
 
-/* ---------------- DAY CHIP ---------------- */
 
 @Composable
 fun DayChip(dateObj: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
@@ -169,7 +167,6 @@ fun DayChip(dateObj: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
     }
 }
 
-/* ---------------- TASK ITEM ---------------- */
 
 
 @Composable
@@ -230,7 +227,6 @@ fun TimelineTaskItem(
             }
         }
 
-        /* -------- CARD -------- */
 
         Card(
             modifier = Modifier
@@ -243,7 +239,6 @@ fun TimelineTaskItem(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
 
-                /* ---- TIME ---- */
                 Text(
                     "${task.startTime} - ${task.endTime}",
                     fontSize = 15.sp,
@@ -253,7 +248,6 @@ fun TimelineTaskItem(
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                /* ---- TITLE + ICONS ---- */
                 Row(verticalAlignment = Alignment.CenterVertically) {
 
                     Text(
@@ -292,7 +286,6 @@ fun TimelineTaskItem(
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                /* ---- PRIORITY + CATEGORY ---- */
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()

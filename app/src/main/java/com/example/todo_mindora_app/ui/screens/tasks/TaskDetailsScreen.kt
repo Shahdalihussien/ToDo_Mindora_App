@@ -19,6 +19,9 @@ import androidx.navigation.NavController
 import com.example.todo_mindora_app.data.local.entity.TaskEntity
 import com.example.todo_mindora_app.ui.theme.*
 import com.example.todo_mindora_app.ui.viewmodel.TaskViewModel
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +50,14 @@ fun TaskDetailsScreen(
                 containerColor = Color.Transparent,
                 topBar = {
                     TopAppBar(
-                        title = { Text("Task Details") },
+                        title = {
+                            Text(
+                                "Task Details",
+                                fontSize = 30.sp,
+                                fontFamily = TitleFont,
+                                color = DarkTeal
+                            )
+                        },
                         navigationIcon = {
                             IconButton(onClick = { navController.popBackStack() }) {
                                 Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -75,6 +85,7 @@ fun TaskDetailsScreen(
                             containerColor = Color.Transparent
                         )
                     )
+
                 }
             ) { padding ->
 
@@ -108,28 +119,39 @@ fun DetailCard(
     value: String
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Cream.copy(alpha = 0.6f)
+            containerColor = Color.White.copy(alpha = 0.75f)
         ),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
+
+            // LABEL
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.Gray
+                fontFamily = DescriptionFont,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = DeepRed
             )
-            Spacer(modifier = Modifier.height(6.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // VALUE
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyLarge,
-                color = TextColor,
-
+                fontFamily = DescriptionFont,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
             )
         }
     }
 }
+

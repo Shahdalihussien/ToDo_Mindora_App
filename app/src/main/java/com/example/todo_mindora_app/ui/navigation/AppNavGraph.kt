@@ -14,7 +14,6 @@ import androidx.navigation.navArgument
 import com.example.todo_mindora_app.ui.screens.calendar.CalendarScreen
 import com.example.todo_mindora_app.ui.screens.home.HomeScreen
 import com.example.todo_mindora_app.ui.screens.pomodoro.PomodoroScreen
-//import com.example.todo_mindora_app.ui.screens.profile.ProfileScreen
 import com.example.todo_mindora_app.ui.screens.task.AddTaskScreen
 import com.example.todo_mindora_app.ui.screens.task.EditTaskScreen
 import com.example.todo_mindora_app.ui.screens.task.TaskDetailsScreen
@@ -32,7 +31,6 @@ fun AppNavGraph(navController: NavHostController) {
                 if (currentRoute != "pomodoro") {
                     BottomNavBar(
                         navController = navController,
-                        onAddClick = { navController.navigate("add_task") }
                     )
                 }
             }
@@ -103,13 +101,10 @@ fun AppNavGraph(navController: NavHostController) {
                     PomodoroScreen(navController = navController)
                 }
 
-//                composable("profile") {
-//                    ProfileScreen()
-//                }
+
             }
         }
     }
 }
 
-/* ---------------- DUMMY ---------------- */
 

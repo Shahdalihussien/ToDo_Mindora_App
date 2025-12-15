@@ -10,7 +10,6 @@ data class AuthUiState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val isLoggedIn: Boolean = false,
-    // 3lshan elhome window
     val isSuccess: Boolean = false,
 )
 

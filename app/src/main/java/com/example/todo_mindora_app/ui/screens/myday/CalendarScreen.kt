@@ -44,7 +44,6 @@ fun CalendarScreen(
         it.date == selectedDate.toString()
     }
 
-    // 👇 كل الأيام اللي عليها Tasks
     val taskDates = allTasks.map { it.date }.toSet()
 
     MainBackground {
@@ -89,8 +88,8 @@ fun CalendarScreen(
                 ) {
                     Text(
                         text = "No tasks yet!",
-                        color = Color.Gray,
-                        fontSize = 16.sp
+                        color = Color.White,
+                        fontSize = 20.sp
                     )
                 }
             } else {
@@ -107,7 +106,6 @@ fun CalendarScreen(
     }
 }
 
-/* -------------------- MONTH HEADER -------------------- */
 
 @Composable
 fun MonthHeader(
@@ -120,20 +118,20 @@ fun MonthHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onPrev) { Text("<", fontSize = 22.sp) }
+        IconButton(onClick = onPrev) { Text("<", fontSize = 25.sp, fontFamily = DescriptionFont) }
 
         Text(
             text = month.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)),
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
-            color = TextColor
+            color = DarkTeal,
+            fontFamily = TitleFont
         )
 
-        IconButton(onClick = onNext) { Text(">", fontSize = 22.sp) }
+        IconButton(onClick = onNext) { Text(">", fontSize = 25.sp, fontFamily = DescriptionFont) }
     }
 }
 
-/* -------------------- DAYS OF WEEK -------------------- */
 
 @Composable
 fun DaysOfWeekRow() {
@@ -145,14 +143,14 @@ fun DaysOfWeekRow() {
                 text = day,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Medium,
-                color = Color.Gray
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                fontFamily = DescriptionFont
             )
         }
     }
 }
 
-/* -------------------- CALENDAR GRID -------------------- */
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -221,7 +219,6 @@ fun MonthCalendar(
     }
 }
 
-/* -------------------- TASK ITEM -------------------- */
 
 @Composable
 fun CalendarTaskItem(task: TaskEntity) {
