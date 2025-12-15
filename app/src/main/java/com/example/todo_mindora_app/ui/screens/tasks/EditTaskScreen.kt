@@ -60,7 +60,11 @@ fun EditTaskScreen(
                 containerColor = Color.Transparent,
                 topBar = {
                     TopAppBar(
-                        title = { Text("Edit Task") },
+                        title = {
+                            Text("Edit Task",
+                            fontSize = 30.sp,
+                            color = DarkTeal,
+                            fontFamily = TitleFont) },
                         navigationIcon = {
                             IconButton(onClick = { navController.popBackStack() }) {
                                 Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -125,7 +129,7 @@ fun EditTaskScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = DeepRed)
                     ) {
                         Text("Save Changes", color = Color.White,fontFamily = DescriptionFont,
-                            fontSize = 20.sp)
+                            fontSize = 22.sp)
                     }
                 }
             }
@@ -138,14 +142,13 @@ fun FieldCard(
     label: String,
     value: String,
     onValueChange: (String) -> Unit
-
 ) {
     Card(
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Grey.copy(alpha = 0.60f)
+            containerColor = Color.White.copy(alpha = 0.60f)
         ),
-        elevation = CardDefaults.cardElevation(0.dp) ,
+        elevation = CardDefaults.cardElevation(0.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
@@ -153,29 +156,38 @@ fun FieldCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 10.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
+
+            // LABEL
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.Black,
-
+                fontFamily = DescriptionFont,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = DeepRed
             )
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // VALUE
             TextField(
                 value = value,
                 onValueChange = onValueChange,
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                textStyle = LocalTextStyle.current.copy(
+                    fontFamily = DescriptionFont,
+                    fontSize = 18.sp,
+                    color = Color.Black
+                ),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = PrimaryColor
+                    focusedIndicatorColor = DeepRed,
+                    unfocusedIndicatorColor = DeepRed,
+                    cursorColor = DeepRed
                 )
             )
         }
@@ -189,10 +201,11 @@ fun ClickableFieldCard(
     onClick: () -> Unit
 ) {
     Card(
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Grey.copy(alpha = 0.60f)
+            containerColor = Color.White.copy(alpha = 0.60f)
         ),
+        elevation = CardDefaults.cardElevation(0.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
@@ -201,22 +214,34 @@ fun ClickableFieldCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
+
+            // LABEL
             Text(
                 text = label,
-                //style = MaterialTheme.typography.labelMedium,
-                color = Color.Gray
+                fontFamily = DescriptionFont,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = DeepRed
             )
-            Spacer(modifier = Modifier.height(6.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // VALUE
             Text(
                 text = value,
-                //style = MaterialTheme.typography.bodyMedium,
-                color = TextColor,
                 fontFamily = DescriptionFont,
-                fontWeight = FontWeight.Bold
-
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
             )
         }
+    }
+}
+@Composable
+fun EditTaskScreenContent() {
+    Button(onClick = {}) {
+        Text("Save Changes")
     }
 }

@@ -5,11 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.todo_mindora_app.data.local.Dao.TaskDao
-import com.example.todo_mindora_app.data.local.Dao.PomodoroDao // <-- Import جديد
+import com.example.todo_mindora_app.data.local.Dao.PomodoroDao
 import com.example.todo_mindora_app.data.local.entity.TaskEntity
-import com.example.todo_mindora_app.data.local.entity.PomodoroEntity // <-- Import جديد
+import com.example.todo_mindora_app.data.local.entity.PomodoroEntity
 
-// 1. ضفنا PomodoroEntity للقائمة، وغيرنا version = 3
 @Database(entities = [TaskEntity::class, PomodoroEntity::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao

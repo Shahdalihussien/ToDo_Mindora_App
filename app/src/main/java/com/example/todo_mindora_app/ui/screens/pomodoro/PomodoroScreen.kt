@@ -39,7 +39,7 @@ import java.util.Locale
 @Composable
 fun PomodoroScreen(
     viewModel: PomodoroViewModel = viewModel(),
-    navController: NavController // 1. ضفنا ده عشان نعرف نرجع
+    navController: NavController
 ) {
 
     val activeColor by animateColorAsState(
@@ -54,18 +54,18 @@ fun PomodoroScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // 2. زرار الرجوع (Back Button)
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp), // مسافة من فوق
+                .padding(top = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = { navController.popBackStack() }, // بيرجع للشاشة اللي فاتت
+                onClick = { navController.popBackStack() },
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.White.copy(alpha = 0.2f), CircleShape) // خلفية خفيفة للزرار
+                    .background(Color.White.copy(alpha = 0.2f), CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -77,7 +77,6 @@ fun PomodoroScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // 3. كبسولة الحالة (نقلناها تحت زرار الرجوع)
         Surface(
             color = Color.White.copy(alpha = 0.2f),
             shape = RoundedCornerShape(50),
@@ -89,23 +88,22 @@ fun PomodoroScreen(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(10.dp)
                         .background(activeColor, CircleShape)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = if (viewModel.isFocusMode) "Focus Session" else "Relax Break",
-                    fontSize = 14.sp,
+                    fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
-                    color = TextColor
+                    color = DarkTeal,
+                    fontFamily = TitleFont
                 )
             }
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // ... (باقي كود التايمر وبار التحكم زي ما هو بالظبط) ...
-        // التايمر
         Box(contentAlignment = Alignment.Center) {
             Canvas(modifier = Modifier.size(260.dp)) {
                 drawCircle(color = Color.White.copy(alpha = 0.1f), radius = size.minDimension / 2)
@@ -127,16 +125,16 @@ fun PomodoroScreen(
                 )
                 Text(
                     text = if (viewModel.isTimerRunning) "Stay Focused" else "Ready?",
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     color = TextColor.copy(alpha = 0.6f),
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = DescriptionFont
                 )
             }
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // بار التحكم
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -168,17 +166,20 @@ fun PomodoroScreen(
                         imageVector = if (viewModel.isTimerRunning) Icons.Rounded.Pause else Icons.Default.PlayArrow,
                         contentDescription = "Play",
                         tint = Color.White,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(35.dp)
                     )
                 }
 
                 IconButton(onClick = { viewModel.switchMode() }) {
-                    Icon(imageVector = Icons.Rounded.SkipNext, contentDescription = "Skip", tint = TextColor.copy(alpha = 0.6f))
+                    Icon(imageVector = Icons.Rounded.SkipNext,
+                        contentDescription = "Skip",
+                        tint = TextColor.copy(alpha = 0.6f),
+                        modifier = Modifier.size(30.dp) )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(50.dp)) // قللنا المسافة شوية عشان مفيش ناف بار
+        Spacer(modifier = Modifier.height(50.dp))
     }
 }
 

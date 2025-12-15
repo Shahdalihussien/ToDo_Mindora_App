@@ -13,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.todo_mindora_app.ui.theme.TextColor
+import com.example.todo_mindora_app.ui.theme.DarkTeal
+import com.example.todo_mindora_app.ui.theme.DescriptionFont
 
 @Composable
 fun CustomTextField(
@@ -32,9 +34,11 @@ fun CustomTextField(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextColor,
+            color = DarkTeal,
             modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
-            fontSize = 14.sp
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = DescriptionFont
         )
 
         TextField(
@@ -61,8 +65,8 @@ fun CustomTextField(
                 disabledIndicatorColor = Color.Transparent,
 
 
-                focusedTextColor = TextColor,
-                unfocusedTextColor = TextColor.copy(alpha = 0.8f),
+                focusedTextColor = DarkTeal,
+                unfocusedTextColor = DarkTeal.copy(alpha = 0.8f),
 
                 focusedPlaceholderColor = Color.Gray.copy(alpha = 0.5f),
                 unfocusedPlaceholderColor = Color.Gray.copy(alpha = 0.5f)
