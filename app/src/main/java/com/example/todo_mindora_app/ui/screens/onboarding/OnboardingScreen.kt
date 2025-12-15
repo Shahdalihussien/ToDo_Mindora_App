@@ -77,7 +77,7 @@ fun OnboardingScreen(
                 1 -> OnboardingPage(
                     title = "Focus with Pomodoro",
                     desc = "Use the Pomodoro timer to stay productive and avoid distractions",
-                    imageRes = R.drawable.pomodoro,
+                    imageRes = R.drawable.focus,
                     showArrow = true,
                     onArrowClick = { scope ->
                         scope.launch { pagerState.animateScrollToPage(2) }
